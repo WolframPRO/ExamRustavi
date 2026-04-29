@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Учебный портал — Экзамен ПДД</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d0f18;
+      --surface: #161926;
+      --surface2: #1e2236;
+      --surface3: #252a40;
+      --accent: #5b8ef5;
+      --accent2: #4cba6f;
+      --accent3: #f5a623;
+      --danger: #e05555;
+      --text: #dde1f0;
+      --muted: #7a85a3;
+      --border: #262d47;
+      --radius: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ─── NAVIGATION ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(13, 15, 24, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      height: 62px;
+      gap: 2rem;
+    }
+
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--text);
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo span { color: var(--accent3); }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-links a:hover { color: var(--text); background: var(--surface2); }
+    .nav-links a.active { color: var(--text); background: var(--surface2); }
+
+    /* ─── HERO ─── */
+    .hero {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(91, 142, 245, 0.1);
+      padding: 0.3rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ─── SECTIONS ─── */
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      font-size: 3rem;
+      font-weight: 900;
+      opacity: 0.08;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .section-header-text {}
+    .section-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border-radius: 100px;
+      margin-bottom: 0.35rem;
+    }
+
+    .b1 { background: rgba(91,142,245,0.15); color: var(--accent); }
+    .b2 { background: rgba(76,186,111,0.15); color: var(--accent2); }
+    .b3 { background: rgba(245,166,35,0.15); color: var(--accent3); }
+
+    .section-header h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 1.5rem;
+    }
+
+    /* ─── YOUTUBE GRID ─── */
+    .yt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .yt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .yt-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+
+    .yt-embed {
+      position: relative;
+      padding-bottom: 56.25%;
+    }
+
+    .yt-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .yt-info {
+      padding: 1rem 1.1rem;
+    }
+
+    .yt-route {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .yt-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ─── THEORY VIDEOS ─── */
+    .theory-videos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tv-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .tv-card video {
+      width: 100%;
+      display: block;
+      background: #000;
+      max-height: 220px;
+      object-fit: cover;
+    }
+
+    .tv-info {
+      padding: 0.9rem 1.1rem;
+    }
+
+    .tv-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent2);
+      margin-bottom: 0.25rem;
+    }
+
+    .tv-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ─── Q&A ACCORDION ─── */
+    .qa-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .qa-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .qa-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .qa-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .qa-item.open { border-color: rgba(91,142,245,0.35); }
+
+    .qa-btn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: background 0.15s;
+    }
+
+    .qa-btn:hover { background: var(--surface2); }
+
+    .qa-num {
+      min-width: 2rem;
+      height: 2rem;
+      border-radius: 8px;
+      background: var(--surface3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent2);
+      flex-shrink: 0;
+    }
+
+    .qa-q { flex: 1; font-weight: 500; line-height: 1.45; }
+
+    .qa-arrow {
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+
+    .qa-item.open .qa-arrow { transform: rotate(180deg); }
+
+    .qa-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .qa-item.open .qa-body { max-height: 900px; }
+
+    .qa-body-inner {
+      padding: 1rem 1.2rem 1.4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .qa-answer-text {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.75;
+    }
+
+    .qa-images {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.1rem;
+      flex-wrap: wrap;
+    }
+
+    .qa-images img {
+      max-height: 190px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      cursor: zoom-in;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .qa-images img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .qa-extra {
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      background: rgba(91,142,245,0.06);
+      border: 1px solid rgba(91,142,245,0.18);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .qa-extra .extra-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ─── LIGHTBOX ─── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+
+    #lightbox.show { display: flex; }
+
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+    }
+
+    /* ─── FLASHCARDS ─── */
+    .fc-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .fc-top {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fc-counter {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .fc-counter strong { color: var(--text); }
+
+    .fc-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .fc-stats .s-known { color: var(--accent2); }
+    .fc-stats .s-unknown { color: var(--danger); }
+
+    .fc-progress-bar {
+      width: 100%;
+      max-width: 640px;
+      height: 5px;
+      background: var(--surface2);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .fc-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent3), var(--accent));
+      border-radius: 100px;
+      transition: width 0.4s ease;
+    }
+
+    .fc-scene {
+      width: 100%;
+      max-width: 640px;
+      height: 320px;
+      perspective: 1400px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .fc-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.55s ease;
+    }
+
+    .fc-card.flipped { transform: rotateY(180deg); }
+
+    .fc-face {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fc-front {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .fc-front::after {
+      content: 'Нажмите, чтобы перевернуть';
+      position: absolute;
+      bottom: 1rem;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .fc-back {
+      background: var(--surface2);
+      border: 2px solid rgba(76,186,111,0.25);
+      transform: rotateY(180deg);
+      overflow-y: auto;
+      justify-content: flex-start;
+    }
+
+    .fc-face-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.9rem;
+    }
+
+    .fc-front .fc-face-label { color: var(--accent3); }
+    .fc-back .fc-face-label { color: var(--accent2); }
+
+    .fc-question-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .fc-front .fc-q {
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .fc-back .fc-a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .fc-back-imgs {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .fc-back-imgs img {
+      height: 70px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      cursor: zoom-in;
+    }
+
+    .fc-controls {
+      display: flex;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .fc-mark-bar {
+      display: flex;
+      gap: 0.65rem;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 0.55rem 1.25rem;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: inherit;
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+
+    .btn:hover { background: var(--surface2); }
+    .btn:disabled { opacity: 0.35; cursor: default; }
+
+    .btn-known {
+      flex: 1;
+      background: rgba(76,186,111,0.1);
+      border-color: rgba(76,186,111,0.25);
+      color: var(--accent2);
+    }
+
+    .btn-known:hover { background: rgba(76,186,111,0.2); }
+
+    .btn-unknown {
+      flex: 1;
+      background: rgba(224,85,85,0.1);
+      border-color: rgba(224,85,85,0.25);
+      color: var(--danger);
+    }
+
+    .btn-unknown:hover { background: rgba(224,85,85,0.2); }
+
+    .btn-icon {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.55rem 0.75rem;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.18s;
+      line-height: 1;
+    }
+
+    .btn-icon:hover { background: var(--surface2); color: var(--text); }
+
+    .fc-completion {
+      width: 100%;
+      max-width: 640px;
+      background: var(--surface);
+      border: 2px solid rgba(76,186,111,0.3);
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      display: none;
+    }
+
+    .fc-completion.show { display: block; }
+
+    .fc-completion h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .fc-completion p { color: var(--muted); margin-bottom: 1.5rem; }
+
+    .fc-completion .score {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--accent2);
+      line-height: 1;
+      display: block;
+      margin: 1rem 0;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .yt-grid, .theory-videos { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links a span { display: none; }
+      .hero h1 { font-size: 1.6rem; }
+      .fc-scene { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">ПДД <span>Экзамен</span></div>
+    <div class="nav-links">
+      <a href="#routes"><span>🗺</span> <span>Маршруты</span></a>
+      <a href="#theory"><span>📚</span> <span>Теория</span></a>
+      <a href="#flashcards"><span>🃏</span> <span>Флешкарты</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<div class="hero">
+  <div class="hero-eyebrow">Учебный портал</div>
+  <h1>Подготовка к экзамену<br>по вождению</h1>
+  <p>Маршруты, тех. характеристики и интерактивные карточки для уверенной сдачи экзамена.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 1: МАРШРУТЫ                        -->
+<!-- ═══════════════════════════════════════════ -->
+<hr class="section-divider" />
+<div id="routes" class="wrap">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-header-text">
+      <div class="section-badge b1">Маршруты</div>
+      <h2>Видео с маршрутами</h2>
+      <p>Ознакомьтесь с экзаменационными маршрутами заранее</p>
+    </div>
+  </div>
+
+  <div class="yt-grid">
+    <div class="yt-card">
+      <div class="yt-embed">
+        <iframe
+          src="https://www.youtube.com/embed/y80J92rdZh8"
+          title="Маршрут 1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+      <div class="yt-info">
+        <div class="yt-route">Маршрут 1</div>
+        <div class="yt-title">Экзаменационный маршрут</div>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-embed">
+        <iframe
+          src="https://www.youtube.com/embed/UvY6a_Fj558"
+          title="Маршрут 2"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+      <div class="yt-info">
+        <div class="yt-route">Маршрут 2</div>
+        <div class="yt-title">Экзаменационный маршрут</div>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-embed">
+        <iframe
+          src="https://www.youtube.com/embed/pabsMoCIcdY"
+          title="Маршрут 3"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+      <div class="yt-info">
+        <div class="yt-route">Маршрут 3</div>
+        <div class="yt-title">Экзаменационный маршрут</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 2: ТЕОРИЯ                          -->
+<!-- ═══════════════════════════════════════════ -->
+<hr class="section-divider" />
+<div id="theory" class="wrap">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-header-text">
+      <div class="section-badge b2">Теория</div>
+      <h2>Теоретический материал</h2>
+      <p>Видео по тех. характеристикам и вопросы для подготовки к экзамену</p>
+    </div>
+  </div>
+
+  <!-- Tech videos -->
+  <div class="theory-videos">
+    <div class="tv-card">
+      <video controls preload="metadata">
+        <source src="Ассеты/I - тех.характеристика.mp4" type="video/mp4" />
+        Ваш браузер не поддерживает видео.
+      </video>
+      <div class="tv-info">
+        <div class="tv-label">Видео I</div>
+        <div class="tv-title">Тех. характеристика</div>
+      </div>
+    </div>
+
+    <div class="tv-card">
+      <video controls preload="metadata">
+        <source src="Ассеты/II - тех.характеристика.mp4" type="video/mp4" />
+        Ваш браузер не поддерживает видео.
+      </video>
+      <div class="tv-info">
+        <div class="tv-label">Видео II</div>
+        <div class="tv-title">Тех. характеристика</div>
+      </div>
+    </div>
+
+    <div class="tv-card">
+      <video controls preload="metadata">
+        <source src="Ассеты/III - тех.характеристика.mp4" type="video/mp4" />
+        Ваш браузер не поддерживает видео.
+      </video>
+      <div class="tv-info">
+        <div class="tv-label">Видео III</div>
+        <div class="tv-title">Тех. характеристика</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q&A Accordion -->
+  <div class="qa-section-title">20 вопросов — экзамен</div>
+
+  <div class="qa-list">
+
+    <!-- Q1 -->
+    <div class="qa-item" data-qa="1">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">1</div>
+        <div class="qa-q">Как проверяется наличие необходимого уровня масла в двигателе?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Щуп для проверки уровня масла следует вынуть из двигателя автомобиля, стоящего на горизонтальной плоскости при выключенном двигателе. После очистки тряпкой или сухой салфеткой щуп помещается обратно в гнездо и после повторного снятия на нём проверяется след масла. Верхний предел следа масла должен находиться между максимальной и минимальной отметкой.</p>
+          <div class="qa-images">
+            <img src="Ассеты/1 Фото маслёнки.jpeg" alt="Масляный бачок" onclick="openLightbox(this)" />
+            <img src="Ассеты/1 фото места для щупа.jpeg" alt="Место для щупа" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Масляный бачок и щуп для проверки масла — масло заливается для смазывания механизмов двигателя. Уровень должен быть не менее половины от min до max (чуть больше — не страшно).<br/><br/>
+            ⚠️ Если масло опустится ниже min — механизмы будут сильно изнашиваться, двигатель перегреваться. Долгая езда в таком режиме приведёт к необходимости капитального ремонта двигателя!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="qa-item" data-qa="2">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">2</div>
+        <div class="qa-q">Как проверяется наличие необходимого уровня тормозной жидкости в бачке?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Уровень тормозной жидкости в бачке должен находиться между минимальной и максимальной отметками.</p>
+          <div class="qa-images">
+            <img src="Ассеты/2 Фото бачка с тормозной жидкостью.jpeg" alt="Бачок с тормозной жидкостью" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Бачок тормозной жидкости находится всегда в районе руля. Уровень должен быть посередине (min и max) или выше. Тормозная жидкость обеспечивает плавное и быстрое торможение.<br/><br/>
+            ⚠️ При критических показателях давление в системе понижается — тормозной путь значительно увеличивается, колодки перегреваются. Говоря грубо — вы остаётесь практически без тормозов!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="qa-item" data-qa="3">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">3</div>
+        <div class="qa-q">Как проверяется исправность тормозной системы?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Совершить несколько нажатий педали тормоза перед запуском двигателя. Затем завести двигатель при непрерывном нажатии педали тормоза в одном положении — запуск должен привести к тому, что педаль свободно опустится до определённого уровня (не до упора). После этого педаль не должна быть сильно твёрдой при нажатии. Кроме того, автомобиль не должен «качаться/смещаться» в сторону при торможении в условиях дорожного движения.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="qa-item" data-qa="4">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">4</div>
+        <div class="qa-q">Как проверяется функционирование стояночного тормоза?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Машина стоит на ровной поверхности, при поднятом ручнике и установленной нейтральной передаче (N) машина не должна передвигаться, если человек толкает её или качает.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="qa-item" data-qa="5">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">5</div>
+        <div class="qa-q">Где найти информацию о рекомендуемом давлении воздуха в шинах?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Информацию можно найти в руководстве по техническому обслуживанию автомобиля или на внутренней части кузова автомобиля (на стойке дверного проёма).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="qa-item" data-qa="6">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">6</div>
+        <div class="qa-q">Как проверяется внешнее состояние шин?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Шины должны быть осмотрены визуально, они должны соответствовать конструкции данного транспортного средства, а давление — быть в пределах нормы.<br/><br/>Не должно быть:<br/>
+          • расслоения протектора шины (трещины)<br/>
+          • механических повреждений (в т.ч. грыжа)<br/>
+          • чрезмерного износа шин (лысая резина)<br/><br/>
+          Признак непригодности: высота протектора менее 1,6 мм.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="qa-item" data-qa="7">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">7</div>
+        <div class="qa-q">Как проверяется исправность стоп-сигналов?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Все задние фары торможения должны включаться при нажатии педали тормоза и работать постоянно (без моргания).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="qa-item" data-qa="8">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">8</div>
+        <div class="qa-q">Как проверить работу гидроусилителя руля?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">После включения двигателя усилие, необходимое для поворота рулевого колеса, должно быть значительно меньше. После поворота колёс в прямое положение руль не должен поворачиваться произвольно. Поворот должен быть плавным, без особых усилий, толчков, вибраций, ударов или шума.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="qa-item" data-qa="9">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">9</div>
+        <div class="qa-q">Как проверяется наличие необходимого уровня охлаждающей жидкости?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Уровень охлаждающей жидкости в расширительном бачке должен находиться между отметками min и max.</p>
+          <div class="qa-images">
+            <img src="Ассеты/9 Фото расширительного бачка.jpeg" alt="Расширительный бачок" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Это бачок охлаждающей жидкости (расширительный бачок). Антифриз нужен исключительно для охлаждения двигателя во время работы и предотвращения перегрева.<br/><br/>
+            ⚠️ Если уровень антифриза критически низкий — двигатель может задымиться или в крайних случаях загореться!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="qa-item" data-qa="10">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">10</div>
+        <div class="qa-q">Как проверить исправность работы указателей поворота?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">После включения зажигания включить левый и правый указатели поворотов и проверить их включение соответствующим индикатором на панели приборов. Затем визуально (допускается, в том числе через третье лицо) проверить включение всех лампочек, чистоту мерцания.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="qa-item" data-qa="11">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">11</div>
+        <div class="qa-q">Как проверяется исправность фар и отражателей в системе?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">После поворота ключа зажигания в соответствующее положение включить габаритные огни и проверить их включение на панели приборов. Затем визуально (в том числе через третье лицо) проверить их включение, целостность, чистоту. Аналогично проверить ближний и дальний свет. Для проверки можно использовать предмет (например, стену) перед автомобилем.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="qa-item" data-qa="12">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">12</div>
+        <div class="qa-q">Как проверяется исправность аварийных огней?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Аварийную световую сигнализацию включить и проверить её работу по соответствующему контрольному индикатору на приборной панели. После чего работу проверить визуально (допустимо, в том числе через третье лицо). Аварийная сигнализация должна обеспечивать синхронную работу всех указателей поворота в мигающем режиме — целостность, чистоту и корректную работу всех указателей.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="qa-item" data-qa="13">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">13</div>
+        <div class="qa-q">Как проверяется уровень жидкости в бачке омывателя ветрового стекла?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Уровень жидкости в бачке омывателя можно проверить после включения зажигания — по индикатору на приборной панели. При отсутствии такого показателя — в руководстве по технической эксплуатации ТС. Либо на глаз.</p>
+          <div class="qa-images">
+            <img src="Ассеты/13 Фото бачка омывателя.jpeg" alt="Бачок омывателя" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Это бачок для стеклоочистителя (дворников) — всегда синяя крышка! На Skoda Rapid — слева. Зимой заливается незамерзающая жидкость (незамерзайка).<br/><br/>
+            ⚠️ Если при отрицательной температуре держать в бачке воду вместо незамерзайки — вы повредите трубки. Вода в бачке может спасти от ДТП — грязное стекло = не видите угрозу!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="qa-item" data-qa="14">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">14</div>
+        <div class="qa-q">Как проверяют шины на наличие рекомендованного давления воздуха?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Для проверки давления воздуха в шинах следует пользоваться инструкцией производителя и соответствующими приборами: контрольным индикатором на приборной панели и/или манометром. Давление воздуха в шине следует проверять в холодных условиях — до начала движения.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="qa-item" data-qa="15">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">15</div>
+        <div class="qa-q">Как проверяют шины на достаточную высоту протектора?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Для проверки высоты протектора шин следует пользоваться инструкцией производителя и специальным шаблоном или линейкой. Измерение производится на наиболее стёртом участке протектора шины. Минимально допустимая высота — 1,6 мм.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="qa-item" data-qa="16">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">16</div>
+        <div class="qa-q">Показать, где проверяется уровень охлаждающей жидкости.</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Показать расширительный бачок системы охлаждения двигателя и продемонстрировать отметки min и max на нём.</p>
+          <div class="qa-images">
+            <img src="Ассеты/16 Фото расширительного бачка.jpeg" alt="Расширительный бачок" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Расширительный бачок охлаждающей жидкости (антифриза). Нужен исключительно для охлаждения двигателя и избегания перегрева. Жидкость должна быть в пределах min–max.<br/><br/>
+            ⚠️ Критически низкий уровень антифриза → двигатель может задымиться или загореться!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="qa-item" data-qa="17">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">17</div>
+        <div class="qa-q">Показать, где находится бачок омывателя ветрового стекла.</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">На Skoda Rapid бачок омывателя находится слева снизу в моторном отсеке. На Skoda Scala — справа снизу. Всегда синяя крышка!</p>
+          <div class="qa-images">
+            <img src="Ассеты/17 Фото бачка омывателя.jpeg" alt="Бачок омывателя" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Бачок для стеклоочистителя — всегда синяя крышка! Зимой — незамерзайка, летом — вода. Уровень: на панели приборов или на глаз.<br/><br/>
+            ⚠️ Вода при 0°C и ниже повредит трубки. Полный бачок может спасти вас от ДТП!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="qa-item" data-qa="18">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">18</div>
+        <div class="qa-q">Как проверяется работа звукового сигнала?</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Нажать на клаксон в центре руля (или просто показать его инспектору). Звук должен быть равномерным и громким. При необходимости можно включить зажигание, чтобы проверить работу звукового сигнала. На экзаменационных машинах сигнал работает и при выключенном двигателе.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="qa-item" data-qa="19">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">19</div>
+        <div class="qa-q">Показать место проверки уровня масла в двигателе.</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Показать щуп для проверки уровня моторного масла на испытуемом автомобиле.</p>
+          <div class="qa-images">
+            <img src="Ассеты/1 Фото маслёнки.jpeg" alt="Масляный бачок" onclick="openLightbox(this)" />
+            <img src="Ассеты/1 фото места для щупа.jpeg" alt="Место для щупа" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Масляный бачок и щуп. Масло заливается для смазывания механизмов двигателя. Уровень — не ниже половины от min и не выше max (чуть больше — не страшно).<br/><br/>
+            ⚠️ Ниже min → износ механизмов, перегрев, капремонт двигателя!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="qa-item" data-qa="20">
+      <button class="qa-btn" onclick="toggleQA(this)">
+        <div class="qa-num">20</div>
+        <div class="qa-q">Показать, где находится бачок с тормозной жидкостью.</div>
+        <svg class="qa-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="qa-body">
+        <div class="qa-body-inner">
+          <p class="qa-answer-text">Показать бачок тормозной жидкости, который находится в районе руля (со стороны водителя в моторном отсеке). Показать отметки min и max.</p>
+          <div class="qa-images">
+            <img src="Ассеты/20 Фото бачка с тормозной жидкостью.jpeg" alt="Бачок с тормозной жидкостью" onclick="openLightbox(this)" />
+          </div>
+          <div class="qa-extra">
+            <span class="extra-label">📌 Важно знать</span>
+            Бачок тормозной жидкости — всегда в районе руля. Уровень — посередине (min–max) или выше. Тормозная жидкость обеспечивает плавное и быстрое торможение.<br/><br/>
+            ⚠️ Низкий уровень → увеличение тормозного пути, перегрев колодок, большая вероятность ДТП. Вы практически без тормозов!
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /qa-list -->
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SECTION 3: FLASHCARDS                      -->
+<!-- ═══════════════════════════════════════════ -->
+<hr class="section-divider" />
+<div id="flashcards" class="wrap">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-header-text">
+      <div class="section-badge b3">Флешкарты</div>
+      <h2>Тренировочные карточки</h2>
+      <p>Отметьте что знаете, повторите что не знаете — до полной уверенности</p>
+    </div>
+  </div>
+
+  <div class="fc-wrapper">
+    <!-- Top bar -->
+    <div class="fc-top">
+      <div class="fc-counter">Карточка <strong id="fc-cur">1</strong> из <strong id="fc-total">20</strong></div>
+      <div class="fc-stats">
+        <span class="s-known" id="fc-known-count">✓ 0</span>
+        <span class="s-unknown" id="fc-unknown-count">✗ 0</span>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="fc-progress-bar">
+      <div class="fc-progress-fill" id="fc-progress" style="width: 5%"></div>
+    </div>
+
+    <!-- Card scene -->
+    <div class="fc-scene" id="fc-scene" onclick="flipCard()">
+      <div class="fc-card" id="fc-card">
+        <!-- FRONT -->
+        <div class="fc-face fc-front">
+          <div class="fc-face-label">Вопрос</div>
+          <div class="fc-question-num" id="fc-qnum">Вопрос 1</div>
+          <div class="fc-q" id="fc-qtext"></div>
+        </div>
+        <!-- BACK -->
+        <div class="fc-face fc-back">
+          <div class="fc-face-label">Ответ</div>
+          <div class="fc-a" id="fc-atext"></div>
+          <div class="fc-back-imgs" id="fc-imgs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="fc-controls">
+      <button class="btn-icon" id="fc-prev" onclick="prevCard()" title="Назад">←</button>
+      <button class="btn" onclick="flipCard()">Перевернуть</button>
+      <button class="btn-icon" id="fc-next" onclick="nextCard()" title="Вперёд">→</button>
+      <button class="btn-icon" onclick="shuffleCards()" title="Перемешать">⇄</button>
+      <button class="btn-icon" onclick="resetCards()" title="Сначала">↺</button>
+    </div>
+
+    <!-- Mark bar -->
+    <div class="fc-mark-bar">
+      <button class="btn btn-unknown" onclick="markCard(false)">✗ Не знаю</button>
+      <button class="btn btn-known" onclick="markCard(true)">✓ Знаю</button>
+    </div>
+
+    <!-- Completion screen -->
+    <div class="fc-completion" id="fc-completion">
+      <div class="fc-face-label" style="color:var(--accent2);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em">Готово!</div>
+      <h3>Все карточки пройдены</h3>
+      <span class="score" id="fc-score">0/20</span>
+      <p id="fc-score-text"></p>
+      <button class="btn btn-known" style="margin:0 auto;display:block;max-width:200px" onclick="resetCards()">Начать заново</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <p>Учебный портал для подготовки к экзамену по вождению &nbsp;·&nbsp; 2025</p>
+</footer>
+
+<!-- ─── LIGHTBOX ─── -->
+<div id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+/* ─── ACCORDION ─── */
+function toggleQA(btn) {
+  const item = btn.closest('.qa-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.qa-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ─── LIGHTBOX ─── */
+function openLightbox(img) {
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox').classList.add('show');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+/* ─── FLASHCARD DATA ─── */
+const allCards = [
+  {
+    num: 1,
+    q: 'Как проверяется наличие необходимого уровня масла в двигателе?',
+    a: 'Вынуть щуп из выключенного двигателя (авто на ровной поверхности), вытереть, вставить обратно, снова вынуть. Уровень следа масла должен быть между min и max.',
+    imgs: ['Ассеты/1 Фото маслёнки.jpeg', 'Ассеты/1 фото места для щупа.jpeg']
+  },
+  {
+    num: 2,
+    q: 'Как проверяется наличие необходимого уровня тормозной жидкости в бачке?',
+    a: 'Уровень тормозной жидкости в бачке должен находиться между отметками min и max. Бачок находится в районе руля.',
+    imgs: ['Ассеты/2 Фото бачка с тормозной жидкостью.jpeg']
+  },
+  {
+    num: 3,
+    q: 'Как проверяется исправность тормозной системы?',
+    a: 'Несколько нажатий педали до запуска. Завести двигатель с нажатой педалью — педаль должна плавно опуститься до уровня (не до упора). После — педаль не должна быть жёсткой. При движении авто не должно уводить в сторону при торможении.',
+    imgs: []
+  },
+  {
+    num: 4,
+    q: 'Как проверяется функционирование стояночного тормоза (ручника)?',
+    a: 'Авто на ровной поверхности, ручник поднят, передача N. При толкании или раскачивании машина не должна двигаться.',
+    imgs: []
+  },
+  {
+    num: 5,
+    q: 'Где найти информацию о рекомендуемом давлении воздуха в шинах?',
+    a: 'В руководстве по техническому обслуживанию автомобиля или на внутренней части кузова (стойка дверного проёма).',
+    imgs: []
+  },
+  {
+    num: 6,
+    q: 'Как проверяется внешнее состояние шин?',
+    a: 'Визуальный осмотр. Шины должны соответствовать ТС, давление — в норме. Недопустимо: расслоение протектора (трещины), механические повреждения (грыжа), чрезмерный износ. Высота протектора менее 1,6 мм — шина непригодна.',
+    imgs: []
+  },
+  {
+    num: 7,
+    q: 'Как проверяется исправность стоп-сигналов?',
+    a: 'При нажатии педали тормоза все задние стоп-сигналы должны включаться и гореть постоянно (без моргания).',
+    imgs: []
+  },
+  {
+    num: 8,
+    q: 'Как проверить работу гидроусилителя руля?',
+    a: 'После включения двигателя усилие на руле значительно меньше. После выравнивания колёс — руль не поворачивается сам. Поворот плавный, без толчков, вибраций и шума.',
+    imgs: []
+  },
+  {
+    num: 9,
+    q: 'Как проверяется уровень охлаждающей жидкости в системе охлаждения двигателя?',
+    a: 'Уровень охлаждающей жидкости (антифриза) в расширительном бачке должен быть между отметками min и max.',
+    imgs: ['Ассеты/9 Фото расширительного бачка.jpeg']
+  },
+  {
+    num: 10,
+    q: 'Как проверить исправность работы указателей поворота?',
+    a: 'Включить зажигание. Включить левый и правый поворотники — проверить по индикатору на панели. Визуально (или через стороннего человека) убедиться, что все лампочки мигают равномерно.',
+    imgs: []
+  },
+  {
+    num: 11,
+    q: 'Как проверяется исправность фар и отражателей?',
+    a: 'Ключ зажигания — включить габариты, проверить по панели и визуально. Повторить для ближнего и дальнего света. Проверить целостность и чистоту фар. Можно использовать стену перед авто.',
+    imgs: []
+  },
+  {
+    num: 12,
+    q: 'Как проверяется исправность аварийных огней?',
+    a: 'Включить аварийку, проверить по индикатору на панели. Визуально убедиться, что все указатели поворота мигают синхронно, целые и чистые.',
+    imgs: []
+  },
+  {
+    num: 13,
+    q: 'Как проверяется уровень жидкости в бачке омывателя ветрового стекла?',
+    a: 'По индикатору на панели приборов после включения зажигания. При отсутствии индикатора — по инструкции ТС или визуально на глаз.',
+    imgs: ['Ассеты/13 Фото бачка омывателя.jpeg']
+  },
+  {
+    num: 14,
+    q: 'Как проверяют шины на наличие рекомендованного давления воздуха?',
+    a: 'По инструкции производителя. Пользоваться манометром и/или индикатором на панели приборов. Давление проверяется в холодных условиях — до начала движения.',
+    imgs: []
+  },
+  {
+    num: 15,
+    q: 'Как проверяют шины на достаточную высоту протектора?',
+    a: 'По инструкции производителя, специальным шаблоном или линейкой. Измерять на наиболее стёртом участке. Минимум — 1,6 мм.',
+    imgs: []
+  },
+  {
+    num: 16,
+    q: 'Показать, где проверяется уровень охлаждающей жидкости.',
+    a: 'Показать расширительный бачок системы охлаждения и отметки min/max на нём.',
+    imgs: ['Ассеты/16 Фото расширительного бачка.jpeg']
+  },
+  {
+    num: 17,
+    q: 'Показать, где находится бачок омывателя ветрового стекла.',
+    a: 'Skoda Rapid — слева снизу в моторном отсеке. Skoda Scala — справа снизу. Всегда СИНЯЯ крышка!',
+    imgs: ['Ассеты/17 Фото бачка омывателя.jpeg']
+  },
+  {
+    num: 18,
+    q: 'Как проверяется работа звукового сигнала (клаксона)?',
+    a: 'Нажать клаксон в центре руля (или показать его инспектору). Звук должен быть равномерным и громким. Включить зажигание при необходимости.',
+    imgs: []
+  },
+  {
+    num: 19,
+    q: 'Показать место проверки уровня масла в двигателе.',
+    a: 'Показать щуп для проверки уровня моторного масла в подкапотном пространстве.',
+    imgs: ['Ассеты/1 Фото маслёнки.jpeg', 'Ассеты/1 фото места для щупа.jpeg']
+  },
+  {
+    num: 20,
+    q: 'Показать, где находится бачок с тормозной жидкостью.',
+    a: 'Бачок тормозной жидкости — всегда в районе руля (со стороны водителя в моторном отсеке). Показать отметки min и max.',
+    imgs: ['Ассеты/20 Фото бачка с тормозной жидкостью.jpeg']
+  }
+];
+
+/* ─── FLASHCARD LOGIC ─── */
+let cards = [...allCards];
+let currentIdx = 0;
+let known = 0;
+let unknown = 0;
+let answered = new Set();
+let isFlipped = false;
+
+function renderCard() {
+  if (currentIdx >= cards.length) {
+    showCompletion();
+    return;
+  }
+
+  const card = cards[currentIdx];
+  document.getElementById('fc-qnum').textContent = 'Вопрос ' + card.num;
+  document.getElementById('fc-qtext').textContent = card.q;
+  document.getElementById('fc-atext').textContent = card.a;
+
+  const imgs = document.getElementById('fc-imgs');
+  imgs.innerHTML = '';
+  card.imgs.forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.onclick = () => openLightbox(img);
+    imgs.appendChild(img);
+  });
+
+  // Reset flip
+  const cardEl = document.getElementById('fc-card');
+  cardEl.classList.remove('flipped');
+  isFlipped = false;
+
+  // Update UI
+  document.getElementById('fc-cur').textContent = currentIdx + 1;
+  document.getElementById('fc-total').textContent = cards.length;
+  const pct = Math.max(5, Math.round(((currentIdx) / cards.length) * 100));
+  document.getElementById('fc-progress').style.width = pct + '%';
+  document.getElementById('fc-prev').disabled = currentIdx === 0;
+  document.getElementById('fc-next').disabled = currentIdx >= cards.length - 1;
+
+  document.getElementById('fc-scene').style.display = 'block';
+  document.getElementById('fc-completion').classList.remove('show');
+}
+
+function flipCard() {
+  const cardEl = document.getElementById('fc-card');
+  isFlipped = !isFlipped;
+  cardEl.classList.toggle('flipped', isFlipped);
+}
+
+function markCard(isKnown) {
+  if (!answered.has(currentIdx)) {
+    answered.add(currentIdx);
+    if (isKnown) known++;
+    else unknown++;
+    updateStats();
+  }
+  if (currentIdx < cards.length - 1) {
+    currentIdx++;
+    renderCard();
+  } else {
+    showCompletion();
+  }
+}
+
+function nextCard() {
+  if (currentIdx < cards.length - 1) {
+    currentIdx++;
+    renderCard();
+  }
+}
+
+function prevCard() {
+  if (currentIdx > 0) {
+    currentIdx--;
+    renderCard();
+  }
+}
+
+function shuffleCards() {
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  currentIdx = 0;
+  known = 0; unknown = 0;
+  answered.clear();
+  updateStats();
+  renderCard();
+}
+
+function resetCards() {
+  cards = [...allCards];
+  currentIdx = 0;
+  known = 0; unknown = 0;
+  answered.clear();
+  updateStats();
+  document.getElementById('fc-scene').style.display = 'block';
+  document.getElementById('fc-completion').classList.remove('show');
+  renderCard();
+}
+
+function updateStats() {
+  document.getElementById('fc-known-count').textContent = '✓ ' + known;
+  document.getElementById('fc-unknown-count').textContent = '✗ ' + unknown;
+}
+
+function showCompletion() {
+  document.getElementById('fc-scene').style.display = 'none';
+  document.getElementById('fc-progress').style.width = '100%';
+  const total = cards.length;
+  document.getElementById('fc-score').textContent = known + '/' + total;
+  const pct = Math.round((known / total) * 100);
+  let msg = '';
+  if (pct === 100) msg = '🎉 Отлично! Вы знаете все вопросы — экзамен сдан!';
+  else if (pct >= 80) msg = '👍 Хороший результат! Ещё чуть-чуть и всё получится.';
+  else if (pct >= 60) msg = '📖 Неплохо, но стоит повторить оставшиеся вопросы.';
+  else msg = '💪 Продолжайте тренироваться — всё обязательно получится!';
+  document.getElementById('fc-score-text').textContent = msg;
+  document.getElementById('fc-completion').classList.add('show');
+}
+
+/* Init */
+renderCard();
+
+/* ─── ACTIVE NAV ─── */
+const sections = ['routes', 'theory', 'flashcards'];
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let active = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.parentElement.offsetTop - 100) active = id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+});
+</script>
+
+</body>
+</html>
